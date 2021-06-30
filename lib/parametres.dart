@@ -10,6 +10,14 @@ class ParametresWidget extends StatefulWidget {
 class _ParametresWidgetState extends State<ParametresWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListView(
+      padding: const EdgeInsets.all(8),
+      children: <Widget>[
+        ListTile( title: Text("Comment ça marche ?"), leading: Icon(Icons.waves)),
+        ListTile( title: Text("Anchor"), leading: Icon(Icons.anchor)),
+        ListTile( title: Text("Alarm"), leading: Icon(Icons.access_alarm)),
+        ListTile( title: Text("Ballot"), leading: Icon(Icons.ballot))
+      ],
+    );
   }
 }
