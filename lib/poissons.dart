@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flex_color_picker/flex_color_picker.dart';
 
 class PoissonsWidget extends StatefulWidget {
   const PoissonsWidget({Key? key}) : super(key: key);
@@ -37,37 +41,125 @@ class _PoissonsWidgetState extends State<PoissonsWidget> {
 class AnimationParameters {
   String animName;
   String description;
-  bool canPersonnaliser;
   bool isUnlocked;
+  String fctName;
+  bool colorPicker;
+  bool speedSlider;
 
-  AnimationParameters(
-      this.animName, this.description, this.canPersonnaliser, this.isUnlocked);
+  AnimationParameters(this.animName, this.description, this.isUnlocked,
+      this.fctName, this.colorPicker, this.speedSlider);
 }
 
-class PoissonConfig extends StatelessWidget {
-  void ButtonActivateClick() {
-    print("Animation activée");
+class PoissonConfig extends StatefulWidget {
+  const PoissonConfig({Key? key}) : super(key: key);
+
+  @override
+  _PoissonConfigState createState() => _PoissonConfigState();
+}
+
+class _PoissonConfigState extends State<PoissonConfig> {
+  Future<http.Response> Static(red, green, blue) {
+    return http.post(
+      Uri.parse('http://10.3.141.1:3000/sendRGB'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, int>{
+        'red': red,
+        'green': green,
+        'blue': blue,
+      }),
+    );
   }
 
+  Future<http.Response> Blink(red, green, blue, wait) {
+    return http.post(
+      Uri.parse('http://10.3.141.1:3000/sendBLINK'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, int>{
+        'red': red,
+        'green': green,
+        'blue': blue,
+        'wait': wait,
+      }),
+    );
+  }
+
+  Future<http.Response> Rainbow(wait) {
+    return http.post(
+      Uri.parse('http://10.3.141.1:3000/sendRAINBOW'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, int>{
+        'wait': wait,
+      }),
+    );
+  }
+
+  void UpdateLED() {
+    AnimationParameters a = animParams[currentlyActivated];
+    if (a.fctName == "BLINK") {
+      Blink(myColor.red, myColor.green, myColor.blue, waitTime);
+    } else if (a.fctName == "STATIC") {
+      Static(myColor.red, myColor.green, myColor.blue);
+    } else {
+      Rainbow(waitTime);
+    }
+  }
+
+  void ButtonActivateClick(index) {
+    setState(() => currentlyActivated = index);
+    UpdateLED();
+
+    //SendRGB();
+  }
+
+
+  void SliderActivate(wait) {
+    setState(() => waitTime = wait);
+    UpdateLED();
+
+    //SendRGB();
+  }
   void ButtonCustomClick() {
     print("Custom animation");
   }
 
+  void ChangeColor(c) {
+    setState(() => myColor = c);
+    UpdateLED();
+    //SendRGB();
+  }
+
   final List<AnimationParameters> animParams = [
+    new AnimationParameters("Rainbow", "Toutes les couleurs de l'arc en ciel",
+        true, "RAINBOW", false, true),
     new AnimationParameters(
-        "Rainbow", "Toutes les couleurs de l'arc en ciel", true, true),
-    new AnimationParameters("Clignotement", "Bip bip bop", true, true),
-    new AnimationParameters("Static", "Une couleur fixe", true, true),
-    new AnimationParameters("Stars", "Des étoiles ou quoi ?", true, false),
-    new AnimationParameters("Fire", "Le feu ou quoi ?", false, false),
+        "Clignotement", "Bip bip bop", true, "BLINK", true, true),
     new AnimationParameters(
-        "Epilepsie", "Non non ça clignote à fond", false, false),
-    new AnimationParameters("Golden Boudin", "Le golden boudin", true, false)
+        "Static", "Une couleur fixe", true, "STATIC", true, false),
+    new AnimationParameters(
+        "Stars", "Des étoiles ou quoi ?", false, "OSEF", false, false),
+    new AnimationParameters(
+        "Fire", "Le feu ou quoi ?", false, "OSEF", false, false),
+    new AnimationParameters(
+        "Epilepsie", "Non non ça clignote à fond", false, "OSEF", false, false),
+    new AnimationParameters(
+        "Golden Boudin", "Le golden boudin", false, "OSEF", false, false)
   ];
 
-  PoissonConfig({Key? key}) : super(key: key);
+  Color myColor = Colors.blue;
+  var waitTime = 10.0;
+
+  var currentlyActivated = 0;
+
 
   Widget ParameterCard(AnimationParameters p) {
+    var isActivated = currentlyActivated == animParams.indexOf(p);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -81,19 +173,33 @@ class PoissonConfig extends StatelessWidget {
           children: <Widget>[
             TextButton(
               child: const Text('ACTIVER'),
-              onPressed: ButtonActivateClick,
+              onPressed: () => ButtonActivateClick(animParams.indexOf(p)),
             ),
-            const SizedBox(width: 8),
-            if (p.canPersonnaliser == true)
-              TextButton(
-                child: const Text('PERSONNALISER'),
-                onPressed: ButtonCustomClick,
-              )
-            else
-              Container(),
             const SizedBox(width: 8),
           ],
         ),
+          if (p.colorPicker && isActivated)
+            ColorPicker(
+              enableShadesSelection: false,
+              color: myColor,
+              onColorChanged: ChangeColor,
+              pickersEnabled: const <ColorPickerType, bool>{
+                ColorPickerType.accent: false,
+              },
+            )
+          else
+            Container(),
+          if(p.speedSlider && isActivated)
+            Slider(
+              value: waitTime,
+              min: 0,
+              max: 100,
+              divisions: 10,
+              label: waitTime.round().toString(),
+              onChanged: SliderActivate
+            )
+          else
+            Container()
 
       ],
     );
