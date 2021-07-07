@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flex_color_picker/flex_color_picker.dart';
 
+import 'main.dart';
+
 class PoissonsWidget extends StatefulWidget {
   const PoissonsWidget({Key? key}) : super(key: key);
 
@@ -65,6 +67,7 @@ class _PoissonConfigState extends State<PoissonConfig> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, int>{
+        'id': MyApp.poisson_id,
         'red': red,
         'green': green,
         'blue': blue,
@@ -79,6 +82,7 @@ class _PoissonConfigState extends State<PoissonConfig> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, int>{
+        'id': MyApp.poisson_id,
         'red': red,
         'green': green,
         'blue': blue,
@@ -94,6 +98,7 @@ class _PoissonConfigState extends State<PoissonConfig> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(<String, int>{
+        'id': MyApp.poisson_id,
         'wait': wait,
       }),
     );

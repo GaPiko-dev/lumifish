@@ -11,18 +11,32 @@
 // the [Scaffold].
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'entreprise.dart';
 import 'parametres.dart';
 import 'achats.dart';
 import 'blog.dart';
 import 'poissons.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  GetID();
+  runApp(const MyApp());
+}
 
+Future<void> GetID() async {
+  http.Response r = await http.get(
+    Uri.parse('http://10.3.141.1:3000/getID'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  );
+  MyApp.poisson_id = int.parse(r.body);
+}
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  static int poisson_id = 0;
   static const String _title = 'Lumifish';
 
   @override
