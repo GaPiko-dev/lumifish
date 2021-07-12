@@ -21,6 +21,8 @@ import 'poissons.dart';
 
 void main() {
   GetID();
+
+  print("salut");
   runApp(const MyApp());
 }
 
@@ -32,6 +34,7 @@ Future<void> GetID() async {
     },
   );
   MyApp.poisson_id = int.parse(r.body);
+  print(MyApp.poisson_id);
 }
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
@@ -62,11 +65,11 @@ class _MainWidgetState extends State<MainWidget> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
+    EntrepriseWidget(),
+    BlogWidget(),
     PoissonsWidget(),
     AchatsWidget(),
-    BlogWidget(),
     ParametresWidget(),
-    EntrepriseWidget(),
   ];
 
   void _onItemTapped(int index) {
@@ -80,6 +83,7 @@ class _MainWidgetState extends State<MainWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lumifish'),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -87,32 +91,33 @@ class _MainWidgetState extends State<MainWidget> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Poisson',
-            backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            label: 'Business',
-            backgroundColor: Colors.green,
+            label: 'Partenaire',
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-            backgroundColor: Colors.purple,
+            icon: Icon(Icons.volunteer_activism),
+            label: 'Associations',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.waves),
+            label: 'Poisson',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.attach_money_rounded),
+            label: 'Récompenses',
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.pink,
-          ), BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.orange,
+            label: 'Réglages',
+            backgroundColor: Colors.blue,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.amberAccent,
         onTap: _onItemTapped,
       ),
     );

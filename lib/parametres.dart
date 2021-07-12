@@ -14,9 +14,8 @@ class _ParametresWidgetState extends State<ParametresWidget> {
       padding: const EdgeInsets.all(8),
       children: <Widget>[
         ListTile( title: Text("Comment ça marche ?"), leading: Icon(Icons.waves)),
-        ListTile( title: Text("Anchor"), leading: Icon(Icons.anchor)),
-        ListTile( title: Text("Alarm"), leading: Icon(Icons.access_alarm)),
-        ListTile( title: Text("Ballot"), leading: Icon(Icons.ballot))
+        ListTile( title: Text("Nous contacter"), leading: Icon(Icons.accessibility_new_outlined)),
+        ListTile( title: Text("Signaler un dysfonctionnement"), leading: Icon(Icons.warning_amber_outlined)),
       ],
     );
   }

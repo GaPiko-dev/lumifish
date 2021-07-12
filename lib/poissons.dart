@@ -23,12 +23,19 @@ class _PoissonsWidgetState extends State<PoissonsWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(children: [
-          Image.network(
-              'https://image.flaticon.com/icons/png/512/743/743418.png',
-              scale: 10),
-          Text("Ammonium en grande concentration")
-        ]),
+        Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Row(children: [
+            Image.network(
+                'https://image.flaticon.com/icons/png/512/743/743418.png',
+                scale: 10),
+            SizedBox(width: 30),
+            Text(
+              "Ammonium en grande concentration",
+              textAlign: TextAlign.center,
+            )
+          ]),
+        ),
         Image.network(
             'https://static.vecteezy.com/ti/vecteur-libre/t2/2534491-poisson-rouge-dessine-a-la-main-gratuit-vectoriel.jpg',
             scale: 0.8),
@@ -122,13 +129,13 @@ class _PoissonConfigState extends State<PoissonConfig> {
     //SendRGB();
   }
 
-
   void SliderActivate(wait) {
     setState(() => waitTime = wait);
     UpdateLED();
 
     //SendRGB();
   }
+
   void ButtonCustomClick() {
     print("Custom animation");
   }
@@ -161,7 +168,6 @@ class _PoissonConfigState extends State<PoissonConfig> {
 
   var currentlyActivated = 0;
 
-
   Widget ParameterCard(AnimationParameters p) {
     var isActivated = currentlyActivated == animParams.indexOf(p);
 
@@ -174,38 +180,57 @@ class _PoissonConfigState extends State<PoissonConfig> {
           subtitle: Text(p.description),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextButton(
-              child: const Text('ACTIVER'),
-              onPressed: () => ButtonActivateClick(animParams.indexOf(p)),
-            ),
+            if (p.isUnlocked && !isActivated)
+              TextButton(
+                child: const Text('ACTIVER'),
+                onPressed: () => ButtonActivateClick(animParams.indexOf(p)),
+              )
+            else if(!isActivated)
+              Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.lightBlue,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.lock),
+                  color: Colors.white,
+                  onPressed: () {},
+                ),
+              ),
             const SizedBox(width: 8),
           ],
         ),
-          if (p.colorPicker && isActivated)
-            ColorPicker(
-              enableShadesSelection: false,
-              color: myColor,
-              onColorChanged: ChangeColor,
-              pickersEnabled: const <ColorPickerType, bool>{
-                ColorPickerType.accent: false,
-              },
-            )
-          else
-            Container(),
-          if(p.speedSlider && isActivated)
-            Slider(
+        if (p.colorPicker && isActivated)
+          ColorPicker(
+            enableShadesSelection: false,
+            color: myColor,
+            onColorChanged: ChangeColor,
+            pickersEnabled: const <ColorPickerType, bool>{
+              ColorPickerType.accent: false,
+            },
+          )
+        else
+          Container(),
+        if (p.speedSlider && isActivated)
+          Slider(
               value: waitTime,
               min: 0,
               max: 100,
               divisions: 10,
               label: waitTime.round().toString(),
-              onChanged: SliderActivate
-            )
-          else
-            Container()
-
+              onChanged: SliderActivate)
+        else
+          Container(),
+        SizedBox(height:25),
+        const SizedBox(
+          width: 450.0,
+          height: 1.0,
+          child: const DecoratedBox(
+            decoration: const BoxDecoration(color: Colors.black),
+          ),
+        ), SizedBox(height:25),
       ],
     );
   }
