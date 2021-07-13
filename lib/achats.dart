@@ -10,6 +10,6 @@ class AchatsWidget extends StatefulWidget {
 class _AchatsWidgetState extends State<AchatsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Image(image: AssetImage('images/recompenses.png'));
+    return Image(image: AssetImage('images/achatsv2.png'));
   }
 }

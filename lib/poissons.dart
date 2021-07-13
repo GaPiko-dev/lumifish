@@ -23,22 +23,21 @@ class _PoissonsWidgetState extends State<PoissonsWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Row(children: [
-            Image.network(
-                'https://image.flaticon.com/icons/png/512/743/743418.png',
-                scale: 10),
-            SizedBox(width: 30),
+        Column(
+          children: [
+            Image(
+              image: AssetImage('images/jaugev2.png'),
+              width: 150),
             Text(
-              "Ammonium en grande concentration",
+              "Bonne nouvelle ! L'eau est plutôt propre aujourd'hui !",
               textAlign: TextAlign.center,
-            )
-          ]),
+            ),
+          ],
         ),
-        Image.network(
-            'https://static.vecteezy.com/ti/vecteur-libre/t2/2534491-poisson-rouge-dessine-a-la-main-gratuit-vectoriel.jpg',
-            scale: 0.8),
+        Image(
+          image: AssetImage('images/poisson_app.jpg'),
+          width: 300,
+        ),
         TextButton(
             onPressed: ButtonClick,
             child: Text("Clique pour changer de couleur"))
@@ -154,13 +153,13 @@ class _PoissonConfigState extends State<PoissonConfig> {
     new AnimationParameters(
         "Static", "Une couleur fixe", true, "STATIC", true, false),
     new AnimationParameters(
-        "Stars", "Des étoiles ou quoi ?", false, "OSEF", false, false),
+        "Stars", "Ca scintille !", false, "OSEF", false, false),
     new AnimationParameters(
-        "Fire", "Le feu ou quoi ?", false, "OSEF", false, false),
+        "Fire", "Fiiiiirrre !", false, "OSEF", false, false),
     new AnimationParameters(
-        "Epilepsie", "Non non ça clignote à fond", false, "OSEF", false, false),
+        "Wave", "Vagues de lumière", false, "OSEF", false, false),
     new AnimationParameters(
-        "Golden Boudin", "Le golden boudin", false, "OSEF", false, false)
+        "Explosion", "C'est explosif", false, "OSEF", false, false)
   ];
 
   Color myColor = Colors.blue;

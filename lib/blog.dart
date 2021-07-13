@@ -10,6 +10,6 @@ class BlogWidget extends StatefulWidget {
 class _BlogWidgetState extends State<BlogWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Image(image: AssetImage('images/associations.png'));
   }
 }
