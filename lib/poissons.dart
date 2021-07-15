@@ -67,6 +67,8 @@ class PoissonConfig extends StatefulWidget {
 
 class _PoissonConfigState extends State<PoissonConfig> {
   Future<http.Response> Static(red, green, blue) {
+    print(MyApp.poisson_id);
+
     return http.post(
       Uri.parse('http://10.3.141.1:3000/sendRGB'),
       headers: {
@@ -82,6 +84,7 @@ class _PoissonConfigState extends State<PoissonConfig> {
   }
 
   Future<http.Response> Blink(red, green, blue, wait) {
+    print(MyApp.poisson_id);
     return http.post(
       Uri.parse('http://10.3.141.1:3000/sendBLINK'),
       headers: {
@@ -98,6 +101,8 @@ class _PoissonConfigState extends State<PoissonConfig> {
   }
 
   Future<http.Response> Rainbow(wait) {
+    print(MyApp.poisson_id);
+
     return http.post(
       Uri.parse('http://10.3.141.1:3000/sendRAINBOW'),
       headers: {
